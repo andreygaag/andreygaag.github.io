@@ -1,0 +1,14 @@
+---
+import type { GetStaticPaths } from 'astro';
+import NotePage from '../../../views/NotePage.astro';
+import { contentSlug, getLocalizedNotes } from '../../../data/collections';
+
+export const getStaticPaths = (async () => {
+  const notes = await getLocalizedNotes('ru');
+  return notes.map((entry) => ({ params: { slug: contentSlug(entry) }, props: { entry } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+---
+
+<NotePage entry={entry} locale="ru" />

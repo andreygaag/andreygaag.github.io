@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NoteCard from '../components/NoteCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { byPubDateDesc, getLocalizedNotes } from '../data/collections';
+import { getProjects } from '../data/projects';
+import { localizedRoute } from '../astro-i18n';
+import { UI, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = UI[locale];
+const latestNotes = (await getLocalizedNotes(locale)).sort(byPubDateDesc).slice(0, 4);
+const featuredProjects = getProjects(locale).slice(0, 3);
+const introLinks = [
+  { href: 'https://github.com/andreygaag', label: 'GitHub' },
+  { href: 'https://t.me/moveax3', label: 'Telegram' },
+  { href: localizedRoute(locale, 'about'), label: messages.navigation.about },
+];
+---
+
+<BaseLayout
+  title={messages.site.title}
+  description={messages.site.description}
+  locale={locale}
+>
+  <section class="intro">
+    <h1>Andrey Gaag</h1>
+    <p class="lead">{messages.home.lead}</p>
+    <nav class="intro-links" aria-label={messages.navigation.primaryLinksLabel}>
+      {introLinks.map(({ href, label }) => <a href={href}>{label}</a>)}
+    </nav>
+  </section>
+
+  <section aria-labelledby="notes-heading">
+    <div class="section-head">
+      <h2 id="notes-heading">{messages.home.latestNotes}</h2>
+      <a href={localizedRoute(locale, 'notes')}>{messages.home.allNotes}</a>
+    </div>
+    {
+      latestNotes.length === 0 ? (
+        <p>{messages.notes.empty}</p>
+      ) : (
+        latestNotes.map((note) => <NoteCard note={note} locale={locale} />)
+      )
+    }
+  </section>
+
+  <section aria-labelledby="projects-heading">
+    <div class="section-head">
+      <h2 id="projects-heading">{messages.home.featuredProjects}</h2>
+      <a href={localizedRoute(locale, 'projects')}>{messages.home.allProjects}</a>
+    </div>
+    {
+      featuredProjects.map((project) => <ProjectCard project={project} locale={locale} />)
+    }
+  </section>
+</BaseLayout>
+
+<style>
+  .intro {
+    padding-bottom: calc(var(--space) * 1.5);
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--color-muted);
+  }
+
+  .intro-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space);
+    margin-top: var(--space);
+  }
+
+  section + section {
+    margin-top: calc(var(--space) * 2);
+  }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space);
+  }
+
+  .section-head h2 {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { getOpenSourceContributions, getProjects } from '../data/projects';
+import { UI, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = UI[locale];
+---
+
+<BaseLayout
+  title={`${messages.projects.heading} - Andrey Gaag`}
+  description={messages.projects.description}
+  locale={locale}
+  translationPath="projects"
+>
+  <h1>{messages.projects.heading}</h1>
+  <section aria-labelledby="projects-heading">
+    <h2 id="projects-heading">{messages.projects.projectsHeading}</h2>
+    {getProjects(locale).map((project) => <ProjectCard project={project} locale={locale} />)}
+  </section>
+
+  <section aria-labelledby="open-source-heading">
+    <h2 id="open-source-heading">{messages.projects.openSourceHeading}</h2>
+    <p>{messages.projects.openSourceDescription}</p>
+    {getOpenSourceContributions(locale).map((project) => (
+      <ProjectCard project={project} locale={locale} />
+    ))}
+  </section>
+</BaseLayout>

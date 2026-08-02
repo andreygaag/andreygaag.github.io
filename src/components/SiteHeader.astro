@@ -1,0 +1,121 @@
+---
+import { localizedRoute } from '../astro-i18n';
+import { LOCALES, UI, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+  translationPath: string;
+}
+
+const { locale, translationPath } = Astro.props;
+const messages = UI[locale];
+const links = [
+  { path: '', label: messages.navigation.home },
+  { path: 'notes', label: messages.navigation.notes },
+  { path: 'blog', label: messages.navigation.blog },
+  { path: 'projects', label: messages.navigation.projects },
+  { path: 'about', label: messages.navigation.about },
+];
+---
+
+<header class="site-header">
+  <a class="brand" href={localizedRoute(locale)}>
+    <span class="brand-mark" aria-hidden="true">
+      <img src="/logo.png" alt="" width="40" height="40" />
+    </span>
+    <span>Andrey Gaag</span>
+  </a>
+  <div class="navigation-group">
+    <nav class="site-navigation" aria-label={messages.navigation.primaryLabel}>
+      {links.map(({ path, label }) => <a href={localizedRoute(locale, path)}>{label}</a>)}
+    </nav>
+    <nav class="language-switcher" aria-label={messages.navigation.languageLabel}>
+      {
+        LOCALES.map((language) => (
+          <a
+            href={localizedRoute(language, translationPath)}
+            lang={language}
+            hreflang={language}
+            aria-current={language === locale ? 'page' : undefined}
+          >
+            {language.toUpperCase()}
+          </a>
+        ))
+      }
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    max-width: var(--content-width);
+    margin-inline: auto;
+    padding: var(--space);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: calc(var(--space) * 0.55);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--color-text);
+  }
+
+  .brand-mark {
+    display: block;
+    width: 2.4rem;
+    height: 2.4rem;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border-radius: 50%;
+    line-height: 0;
+  }
+
+  .brand-mark img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 50%;
+    transform: scale(1.08);
+  }
+
+  .navigation-group,
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+  }
+
+  .navigation-group {
+    gap: var(--space);
+  }
+
+  .site-navigation {
+    gap: calc(var(--space) * 1.1);
+  }
+
+  .language-switcher {
+    gap: calc(var(--space) * 0.4);
+    padding-left: var(--space);
+    border-left: 1px solid var(--color-border);
+    font-size: 0.85rem;
+  }
+
+  nav a {
+    color: var(--color-muted);
+  }
+
+  .language-switcher a[aria-current='page'] {
+    color: var(--color-text);
+    font-weight: 700;
+  }
+</style>

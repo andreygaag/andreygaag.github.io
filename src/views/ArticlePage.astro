@@ -1,0 +1,49 @@
+---
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { contentSlug } from '../data/collections';
+import { UI, type Locale } from '../i18n';
+
+interface Props {
+  entry: CollectionEntry<'articles'>;
+  locale: Locale;
+}
+
+const { entry, locale } = Astro.props;
+const { title, pubDate, description, draft } = entry.data;
+const slug = contentSlug(entry);
+const { Content } = await render(entry);
+const publishedDate = pubDate.toISOString().slice(0, 10);
+const fallback = UI[locale].common.translationPending;
+---
+
+<BaseLayout
+  title={`${title || fallback} - Andrey Gaag`}
+  description={description || fallback}
+  locale={locale}
+  translationPath={`blog/${slug}`}
+  ogType="article"
+  noIndex={draft}
+>
+  <article>
+    <h1>{title || fallback}</h1>
+    <div class="meta">
+      <time datetime={publishedDate}>{publishedDate}</time>
+      {draft && <span class="draft">{UI[locale].common.draft}</span>}
+    </div>
+    <Content />
+  </article>
+</BaseLayout>
+
+<style>
+  .meta {
+    display: flex;
+    gap: var(--space);
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
+  .draft {
+    font-weight: 700;
+  }
+</style>

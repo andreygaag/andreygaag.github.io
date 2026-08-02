@@ -1,0 +1,69 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { localizedRoute } from '../astro-i18n';
+import { LOCALES, UI, type Locale } from '../i18n';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  locale: Locale;
+  translationPath?: string;
+  ogType?: 'article' | 'website';
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description,
+  locale,
+  translationPath = '',
+  ogType = 'website',
+  noIndex = false,
+} = Astro.props;
+const canonicalUrl = new URL(localizedRoute(locale, translationPath), Astro.site);
+const alternateUrls = LOCALES.map((alternateLocale) => ({
+  locale: alternateLocale,
+  url: new URL(localizedRoute(alternateLocale, translationPath), Astro.site),
+}));
+const defaultUrl = new URL(localizedRoute('en', translationPath), Astro.site);
+const rssUrl = new URL(localizedRoute(locale, 'rss.xml'), Astro.site);
+const messages = UI[locale];
+---
+
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalUrl} />
+    {
+      alternateUrls.map(({ locale: alternateLocale, url }) => (
+        <link rel="alternate" hreflang={alternateLocale} href={url} />
+      ))
+    }
+    <link rel="alternate" hreflang="x-default" href={defaultUrl} />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={messages.site.feedTitle}
+      href={rssUrl}
+    />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:locale" content={locale === 'en' ? 'en_US' : 'ru_RU'} />
+    <meta property="og:locale:alternate" content={locale === 'en' ? 'ru_RU' : 'en_US'} />
+  </head>
+  <body>
+    <SiteHeader locale={locale} translationPath={translationPath} />
+    <main>
+      <slot />
+    </main>
+    <SiteFooter locale={locale} />
+  </body>
+</html>

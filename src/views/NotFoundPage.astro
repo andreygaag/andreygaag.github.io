@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { localizedRoute } from '../astro-i18n';
+import { UI, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = UI[locale];
+---
+
+<BaseLayout
+  title={`${messages.notFound.heading} - Andrey Gaag`}
+  description={messages.notFound.description}
+  locale={locale}
+  translationPath="404"
+  noIndex
+>
+  <h1>{messages.notFound.heading}</h1>
+  <p>{messages.notFound.body}</p>
+  <a href={localizedRoute(locale)}>{messages.notFound.homeLink}</a>
+</BaseLayout>

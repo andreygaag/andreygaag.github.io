@@ -1,0 +1,151 @@
+:root {
+  --content-width: 44rem;
+  --color-text: #1a1a1a;
+  --color-muted: #565656;
+  --color-background: #ffffff;
+  --color-surface: #f4f4f4;
+  --color-border: #e2e2e2;
+  --color-link: #0b5bd3;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas,
+    monospace;
+  --space: 1rem;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-body);
+  line-height: 1.65;
+  color: var(--color-text);
+  background: var(--color-background);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+main {
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding: calc(var(--space) * 2) var(--space);
+}
+
+h1,
+h2,
+h3 {
+  line-height: 1.25;
+  margin: calc(var(--space) * 1.6) 0 var(--space);
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1.2rem;
+}
+
+p,
+ul,
+ol {
+  margin: 0 0 var(--space);
+}
+
+a {
+  color: var(--color-link);
+  text-decoration: none;
+}
+
+a:hover,
+a:focus {
+  text-decoration: underline;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--color-surface);
+  padding: 0.15em 0.35em;
+  border-radius: 0.25rem;
+}
+
+pre {
+  font-family: var(--font-mono);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: var(--space);
+  overflow-x: auto;
+  line-height: 1.5;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+}
+
+blockquote {
+  margin: var(--space) 0;
+  padding-left: var(--space);
+  border-left: 3px solid var(--color-border);
+  color: var(--color-muted);
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: calc(var(--space) * 2) 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+figure {
+  margin: 0 0 var(--space);
+}
+
+figure > p {
+  margin: 0;
+}
+
+figcaption {
+  margin-top: calc(var(--space) * 0.5);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
+
+.card {
+  padding: var(--space) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.card h2 {
+  margin: 0 0 calc(var(--space) * 0.4);
+  font-size: 1.3rem;
+}
+
+.card p {
+  color: var(--color-muted);
+}
+
+.card-meta {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}

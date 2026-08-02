@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { byPubDateDesc, getLocalizedArticles } from '../data/collections';
+import { UI, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = UI[locale];
+const articles = (await getLocalizedArticles(locale)).sort(byPubDateDesc);
+---
+
+<BaseLayout
+  title={`${messages.blog.heading} - Andrey Gaag`}
+  description={messages.blog.description}
+  locale={locale}
+  translationPath="blog"
+>
+  <h1>{messages.blog.heading}</h1>
+  {
+    articles.length === 0 ? (
+      <p>{messages.blog.empty}</p>
+    ) : (
+      articles.map((article) => <ArticleCard article={article} locale={locale} />)
+    )
+  }
+</BaseLayout>

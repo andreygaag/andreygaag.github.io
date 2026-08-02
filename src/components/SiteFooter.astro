@@ -1,0 +1,45 @@
+---
+import { UI, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = UI[locale];
+const links = [
+  { href: 'https://github.com/andreygaag', label: 'GitHub' },
+  { href: 'https://t.me/moveax3', label: 'Telegram' },
+  { href: locale === 'ru' ? '/ru/rss.xml' : '/rss.xml', label: 'RSS' },
+];
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <nav aria-label={messages.navigation.contactsLabel}>
+    {links.map(({ href, label }) => <a href={href}>{label}</a>)}
+  </nav>
+  <p>© {year} Andrey Gaag - {messages.site.footer}</p>
+</footer>
+
+<style>
+  .site-footer {
+    max-width: var(--content-width);
+    margin-inline: auto;
+    padding: calc(var(--space) * 1.5) var(--space);
+    border-top: 1px solid var(--color-border);
+    color: var(--color-muted);
+    font-size: 0.95rem;
+  }
+
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--space) * 1.1);
+    margin-bottom: calc(var(--space) * 0.5);
+  }
+
+  p {
+    margin: 0;
+  }
+</style>

@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { UI, type Locale } from '../i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const messages = UI[locale];
+const contacts = [
+  { href: 'https://github.com/andreygaag', label: 'GitHub' },
+  { href: 'https://t.me/moveax3', label: 'Telegram' },
+  { href: 'mailto:moveax3@gmail.com', label: 'moveax3@gmail.com' },
+];
+---
+
+<BaseLayout
+  title={`${messages.navigation.about} - Andrey Gaag`}
+  description={messages.about.description}
+  locale={locale}
+  translationPath="about"
+>
+  <h1>{messages.about.heading}</h1>
+  {messages.about.body.map((paragraph) => <p>{paragraph}</p>)}
+  <nav aria-label={messages.navigation.contactsLabel}>
+    {contacts.map(({ href, label }) => <a href={href}>{label}</a>)}
+  </nav>
+</BaseLayout>
+
+<style>
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--space) * 1.1);
+    margin-top: var(--space);
+  }
+</style>

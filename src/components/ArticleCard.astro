@@ -1,0 +1,39 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { localizedContentRoute } from '../astro-i18n';
+import { UI, type Locale } from '../i18n';
+import { contentSlug } from '../data/collections';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+  locale: Locale;
+}
+
+const { article, locale } = Astro.props;
+const { title, pubDate, description, draft } = article.data;
+const publishedDate = pubDate.toISOString().slice(0, 10);
+const fallback = UI[locale].common.translationPending;
+---
+
+<article class="card">
+  <h2><a href={localizedContentRoute(locale, 'blog', contentSlug(article))}>{title || fallback}</a></h2>
+  <div class="card-meta">
+    <time datetime={publishedDate}>{publishedDate}</time>
+    {draft && <span class="draft">{UI[locale].common.draft}</span>}
+  </div>
+  <p>{description || fallback}</p>
+</article>
+
+<style>
+  .card p {
+    margin: calc(var(--space) * 0.5) 0 0;
+  }
+
+  .draft {
+    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    padding: 0.1em 0.5em;
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+  }
+</style>
