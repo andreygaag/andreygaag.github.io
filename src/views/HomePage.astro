@@ -16,10 +16,17 @@ const messages = UI[locale];
 const latestNotes = (await getLocalizedNotes(locale)).sort(byPubDateDesc).slice(0, 4);
 const featuredProjects = getProjects(locale).slice(0, 3);
 const introLinks = [
-  { href: 'https://github.com/andreygaag', label: 'GitHub' },
-  { href: 'https://t.me/moveax3', label: 'Telegram' },
-  { href: localizedRoute(locale, 'about'), label: messages.navigation.about },
-];
+  {
+    href: localizedRoute(locale, 'notes/2026-08-14-dynamic-system-prompt-tail-breaks-cache'),
+    label: messages.home.flagshipCta,
+    kind: 'primary',
+  },
+  {
+    href: 'https://t.me/moveax3',
+    label: messages.home.contactCta,
+    kind: 'secondary',
+  },
+] as const;
 ---
 
 <BaseLayout
@@ -30,8 +37,13 @@ const introLinks = [
   <section class="intro">
     <h1>Andrey Gaag</h1>
     <p class="lead">{messages.home.lead}</p>
+    <p class="positioning">{messages.home.positioning}</p>
     <nav class="intro-links" aria-label={messages.navigation.primaryLinksLabel}>
-      {introLinks.map(({ href, label }) => <a href={href}>{label}</a>)}
+      {
+        introLinks.map(({ href, label, kind }) => (
+          <a class={`cta cta-${kind}`} href={href}>{label}</a>
+        ))
+      }
     </nav>
   </section>
 
@@ -68,7 +80,12 @@ const introLinks = [
   .lead {
     font-size: 1.2rem;
     line-height: 1.6;
+    max-width: 42rem;
+  }
+
+  .positioning {
     color: var(--color-muted);
+    max-width: 38rem;
   }
 
   .intro-links {
@@ -76,6 +93,43 @@ const introLinks = [
     flex-wrap: wrap;
     gap: var(--space);
     margin-top: var(--space);
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--color-text);
+    border-radius: 0.4rem;
+    font-weight: 600;
+  }
+
+  .cta:hover,
+  .cta:focus {
+    text-decoration: none;
+  }
+
+  .cta:focus-visible {
+    outline: 3px solid var(--color-link);
+    outline-offset: 2px;
+  }
+
+  .cta-primary {
+    color: var(--color-background);
+    background: var(--color-text);
+  }
+
+  .cta-primary:hover {
+    opacity: 0.85;
+  }
+
+  .cta-secondary {
+    color: var(--color-text);
+  }
+
+  .cta-secondary:hover {
+    background: var(--color-surface);
   }
 
   section + section {

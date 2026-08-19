@@ -23,6 +23,9 @@ interface Messages {
   };
   home: {
     lead: string;
+    positioning: string;
+    flagshipCta: string;
+    contactCta: string;
     latestNotes: string;
     allNotes: string;
     featuredProjects: string;
@@ -68,7 +71,7 @@ export const UI = {
     site: {
       title: 'Andrey Gaag - Agent Engineering',
       description:
-        'Personal research lab of Andrey Gaag: field notes and long-form writing on AI agents, LLM systems, and agent reliability.',
+        'I design reliable AI-agent systems for production and test where they lie to us and to themselves: tool contracts, memory, HITL, observability, and failure recovery.',
       footer: 'Agent Engineering',
       feedTitle: 'Andrey Gaag - Field Notes & Articles',
       feedDescription:
@@ -87,7 +90,10 @@ export const UI = {
     },
     home: {
       lead:
-        'I build production software, developer tools, and AI-agent systems. Most of my current work is about making agents useful and reliable: giving them memory, planning, tools, and clear boundaries. I write here about what I learn while building them.',
+        'I design reliable AI-agent systems for production: tool contracts, memory, HITL, observability, and failure recovery.',
+      positioning: 'I test where agent systems lie to us and to themselves.',
+      flagshipCta: 'Read the flagship case study',
+      contactCta: 'Discuss an agent system',
       latestNotes: 'Latest field notes',
       allNotes: 'All notes',
       featuredProjects: 'Featured projects',
@@ -138,7 +144,7 @@ export const UI = {
     site: {
       title: 'Андрей Гааг - Инженерия AI-агентов',
       description:
-        'Личная исследовательская лаборатория Андрея Гаага: заметки и статьи об AI-агентах, LLM-системах и надёжности агентов.',
+        'Я проектирую надёжные AI-агентные системы для production и проверяю, где они врут нам и самим себе: контракты инструментов, память, HITL, наблюдаемость и восстановление.',
       footer: 'Инженерия AI-агентов',
       feedTitle: 'Андрей Гааг - заметки и статьи',
       feedDescription:
@@ -157,7 +163,10 @@ export const UI = {
     },
     home: {
       lead:
-        'Я создаю production-системы, инструменты для разработчиков и AI-агентов. Сейчас в моей работе главное - сделать агентов полезными и надёжными: дать им память, планирование, инструменты и понятные границы. Здесь я рассказываю о том, что узнаю, пока их строю.',
+        'Я проектирую надёжные AI-агентные системы для production: контракты инструментов, память, HITL, наблюдаемость и восстановление после сбоев.',
+      positioning: 'Я проверяю, где агентные системы врут нам и самим себе.',
+      flagshipCta: 'Читать главный разбор',
+      contactCta: 'Обсудить агентную систему',
       latestNotes: 'Свежие полевые заметки',
       allNotes: 'Все заметки',
       featuredProjects: 'Основные проекты',
@@ -177,7 +186,7 @@ export const UI = {
     projects: {
       heading: 'Проекты',
       description:
-        'Проекты и вклад Андрея Гаага в open source.',
+        'Проекты и вклад Андрея Гааг в open source.',
       projectsHeading: 'Проекты',
       openSourceHeading: 'Open Source',
       openSourceDescription: 'Вклад в открытые проекты.',

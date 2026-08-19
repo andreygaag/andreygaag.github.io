@@ -21,6 +21,7 @@ for (const [route, path] of pages) {
 auditFeeds();
 auditSitemap();
 auditDrafts();
+auditHomepages();
 console.log(`Build audit passed for ${pages.size} localized HTML pages.`);
 
 function auditPage(route, path) {
@@ -109,6 +110,49 @@ function auditDrafts() {
     assert(!feeds.includes(url), `Draft appears in RSS: ${route}`);
     assert(!sitemap.includes(url), `Draft appears in sitemap: ${route}`);
   }
+}
+
+function auditHomepages() {
+  const homepages = [
+    {
+      path: join(DIST, 'index.html'),
+      positioning: 'I test where agent systems lie to us and to themselves.',
+      flagshipLabel: 'Read the flagship case study',
+      flagshipHref: '/notes/2026-08-14-dynamic-system-prompt-tail-breaks-cache/',
+      contactLabel: 'Discuss an agent system',
+    },
+    {
+      path: join(DIST, 'ru/index.html'),
+      positioning: 'Я проверяю, где агентные системы врут нам и самим себе.',
+      flagshipLabel: 'Читать главный разбор',
+      flagshipHref: '/ru/notes/2026-08-14-dynamic-system-prompt-tail-breaks-cache/',
+      contactLabel: 'Обсудить агентную систему',
+    },
+  ];
+
+  for (const homepage of homepages) {
+    const html = readFileSync(homepage.path, 'utf8');
+    assert(html.includes(homepage.positioning), `${homepage.path} has wrong positioning`);
+    assert(
+      hasCta(html, homepage.flagshipLabel, homepage.flagshipHref, 'cta-primary'),
+      `${homepage.path} has wrong flagship CTA`,
+    );
+    assert(
+      hasCta(html, homepage.contactLabel, 'https://t.me/moveax3', 'cta-secondary'),
+      `${homepage.path} has wrong contact CTA`,
+    );
+  }
+}
+
+function hasCta(html, label, href, className) {
+  const anchor = [...html.matchAll(/<a\b([^>]*)>([^<]+)<\/a>/g)].find(
+    (match) => match[2] === label,
+  );
+  return Boolean(
+    anchor &&
+      anchor[1].includes(`href="${href}"`) &&
+      anchor[1].match(new RegExp(`class="[^"]*\\b${className}\\b[^"]*"`)),
+  );
 }
 
 function draftRoutes() {
